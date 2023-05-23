@@ -61,3 +61,10 @@
 └── testdata                                  # Test Data
     └── exchange_mock.go
 ```
+
+### how to install
+go mod download
+### run in local
+go run /cmd/app/main.go
+
+

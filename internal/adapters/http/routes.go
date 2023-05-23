@@ -37,7 +37,7 @@ func InitRoutes() *echo.Echo {
 	e.POST("/login", AuthHandler.Login())
 	e.POST("/registrasi", AuthHandler.Register())
 
-	// admin group
+	// montor group
 	mentors := e.Group("/mentors")
 	mentors.Use(middleware.Logger())
 	mentors.Use(middlewares.AuthMiddleware())
@@ -47,6 +47,12 @@ func InitRoutes() *echo.Echo {
 	mentors.GET("/users/:id", userHandler.GetUser())
 	mentors.POST("/users", userHandler.CreateUser())
 	mentors.DELETE("/users/:id", userHandler.DeleteUser())
+
+	// montor group
+	students := e.Group("/students")
+	students.Use(middleware.Logger())
+	students.Use(middlewares.AuthMiddleware())
+	students.Use(middlewares.RequireRole("students"))
 
 	return e
 }

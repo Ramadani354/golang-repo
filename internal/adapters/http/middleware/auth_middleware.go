@@ -7,9 +7,8 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/spf13/viper"
 )
-
-const SECRET_JWT = "123"
 
 func CreateToken(userID int, email string, role string) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
@@ -19,8 +18,8 @@ func CreateToken(userID int, email string, role string) (string, error) {
 	claims["email"] = email
 	claims["role"] = role
 	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
-
-	tokenString, err := token.SignedString([]byte(SECRET_JWT))
+	secret := viper.GetString("SECRET_JWT")
+	tokenString, err := token.SignedString([]byte(secret))
 	if err != nil {
 		return "", err
 	}
@@ -45,7 +44,7 @@ func RequireRole(role string) echo.MiddlewareFunc {
 
 func AuthMiddleware() echo.MiddlewareFunc {
 	return middleware.JWTWithConfig(middleware.JWTConfig{
-		SigningKey: []byte(SECRET_JWT),
+		SigningKey: []byte(viper.GetString("SECRET_JWT")),
 		ErrorHandler: func(err error) error {
 			if _, ok := err.(*jwt.ValidationError); ok {
 				return echo.NewHTTPError(http.StatusUnauthorized, "Invalid token")
