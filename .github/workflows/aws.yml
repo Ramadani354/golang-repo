@@ -1,4 +1,4 @@
-name: DeployToMaster
+name: Deploy
 on:
   push:
     branches: [ "master" ]
@@ -6,7 +6,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: DeployToMaster
+    - name: Deploy
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -15,9 +15,9 @@ jobs:
         port: 22
         script: |
           export PATH=$PATH:/usr/local/go/bin
-          cd dev/golang-repo
+          cd master/golang-repo
           git pull
-          docker build -t go-staging .
-          docker stop go-staging
-          docker rm go-staging
-          docker run --name go-staging -dp 9091:9090 go-staging
+          docker build -t go-master .
+          docker stop go-master
+          docker rm go-master
+          docker run --name go-master -dp 9091:9090 go-master
