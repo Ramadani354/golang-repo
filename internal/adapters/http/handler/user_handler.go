@@ -82,7 +82,7 @@ func (handler UserHandler) CreateUser() echo.HandlerFunc {
 		}
 		user.Password = string(hashedPassword)
 		// Set Role default cutomer
-		user.Role = "customer"
+		user.Role = "student"
 
 		err = handler.UserUsecase.CreateUser(user)
 		if err != nil {
