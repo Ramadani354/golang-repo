@@ -21,3 +21,4 @@ jobs:
           docker stop go-master
           docker rm go-master
           docker run --name go-master -dp 9091:9090 go-master
+ 
