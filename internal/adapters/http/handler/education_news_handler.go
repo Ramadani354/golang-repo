@@ -7,7 +7,7 @@ import (
 	"capston-lms/internal/application/usecase"
 	"capston-lms/internal/entity"
 
-	"github.com/go-playground/validator"
+	// "github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
 )
 
@@ -72,11 +72,19 @@ func (handler EducationNewsHandler) CreateEducationNews() echo.HandlerFunc {
 			})
 		}
 
-		validate := validator.New()
-		if err := validate.Struct(education_news); err != nil {
-			return e.JSON(http.StatusBadRequest, map[string]interface{}{
-				"status code": http.StatusBadRequest,
-				"message":     err.Error(),
+		// validate := validator.New()
+		// if err := validate.Struct(education_news); err != nil {
+		// 	return e.JSON(http.StatusBadRequest, map[string]interface{}{
+		// 		"status code": http.StatusBadRequest,
+		// 		"message":     err.Error(),
+		// 	})
+		// }
+
+		err := handler.EducationNewsUsecase.CreateEducationNews(education_news)
+		if err != nil {
+			return e.JSON(http.StatusInternalServerError, map[string]interface{}{
+				"status code": http.StatusInternalServerError,
+				"message":     "failed to created user",
 			})
 		}
 
